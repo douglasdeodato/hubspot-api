@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Search Results</title>
+</head>
+<body>
+    <h1>Contact Search Results</h1>
+    <ul>
+        {% for result in results %}
+        <li>
+            <h2>Contact ID: {{ result.vid }}</h2>
+            <p><strong>Name:</strong> {{ result.properties.firstname.value }} {{ result.properties.lastname.value }}</p>
+            <p><strong>Speciality:</strong> {{ result.properties.speciality.value }}</p>
+            <p><strong>Work Address:</strong> {{ result.properties.workaddress1.value }}</p>
+            <p><strong>Areas of Interest:</strong> {{ result.properties.areas_of_interest.value }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
