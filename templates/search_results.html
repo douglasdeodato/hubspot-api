@@ -13,6 +13,9 @@
             <p><strong>Speciality:</strong> {{ result.properties.speciality.value }}</p>
             <p><strong>Work Address:</strong> {{ result.properties.workaddress1.value }}</p>
             <p><strong>Areas of Interest:</strong> {{ result.properties.areas_of_interest.value }}</p>
+            {% if 'county' in result.properties %}
+                <p><strong>County:</strong> {{ result.properties.county.value }}</p>
+            {% endif %}
         </li>
         {% endfor %}
     </ul>
