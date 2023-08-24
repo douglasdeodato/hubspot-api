@@ -5,16 +5,24 @@
 </head>
 <body>
     <h1>Contact Search</h1>
-    <form action="/search" method="post">
+    
+    <form method="POST" action="/search">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter name"><br>
-
+        <input type="text" name="name" id="name"><br>
+        
         <label for="speciality">Speciality:</label>
-        <input type="text" id="speciality" name="speciality" placeholder="Enter speciality"><br>
-
+        <input type="text" name="speciality" id="speciality"><br>
+        
         <label for="work_address">Work Address:</label>
-        <input type="text" id="work_address" name="work_address" placeholder="Enter work address"><br>
-
+        <input type="text" name="work_address" id="work_address"><br>
+        
+        <label for="counties">County:</label><br>
+        {% for county in counties %}
+        <label>
+            <input type="checkbox" name="county" value="{{ county }}">{{ county }}
+        </label><br>
+        {% endfor %}
+        
         <button type="submit">Search</button>
     </form>
 </body>
