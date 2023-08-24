@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Information</title>
+</head>
+<body>
+    <h1>Contact Information</h1>
+    
+    {% for contact_id, contact_data in contacts.items() %}
+    <div>
+        <h2>Contact ID: {{ contact_id }}</h2>
+        
+        <p><strong>Category Listing:</strong> {{ contact_data.properties.accreditation.value | default("N/A") }}</p>
+        <p><strong>Name:</strong> {{ contact_data.properties.firstname.value }} {{ contact_data.properties.lastname.value }}</p>
+        <p><strong>Email:</strong> {{ contact_data.properties.email.value }}</p>
+        <p><strong>Speciality:</strong> {{ contact_data.properties.speciality.value | default("N/A") }}</p>
+        <p><strong>Work Phone:</strong> {{ contact_data.properties.directory___work_phone.value | default("N/A") }}</p>
+        <p><strong>Work Address:</strong> {{ contact_data.properties.workaddress1.value | default("N/A") }}</p>
+        <p><strong>Language:</strong> {{ contact_data.properties.hs_language.value | default("N/A") }}</p>
+        
+        {% if contact_data.archived is defined %}
+        <p>Archived: {{ contact_data.archived }}</p>
+        {% endif %}
+        <!-- Add more placeholders for other properties you want to display -->
+    </div>
+    {% endfor %}
+</body>
+</html>
