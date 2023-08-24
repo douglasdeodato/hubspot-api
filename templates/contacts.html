@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact List</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Identity Profiles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.firstname }}</td>
+                <td>{{ contact.lastname }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <ul>
+                        {% for identity_profile in contact.identity_profiles %}
+                        <li>
+                            <strong>VID:</strong> {{ identity_profile.vid }}<br>
+                            <strong>Identities:</strong>
+                            <ul>
+                                {% for identity in identity_profile.identities %}
+                                <li>
+                                    Type: {{ identity.type }}<br>
+                                    Value: {{ identity.value }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
