@@ -51,6 +51,12 @@ def search():
 
     return render_template('search_results.html', results=search_results)
 
+@app.route('/contact_detail/<contact_id>')
+def contact_detail(contact_id):
+    contact_data = fetch_contact_data(contact_id)
+    return render_template('contact_detail.html', contact_data=contact_data)
+
+
 def fetch_contact_data(contact_id):
     api_url = API_URL_PATTERN.format(contact_id)
     response = requests.get(api_url, headers={'Authorization': f'Bearer {API_KEY}'})

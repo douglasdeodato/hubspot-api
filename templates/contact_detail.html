@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Detail</title>
+    <!-- Include Font Awesome stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Include Bootstrap stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+         .card {
+            height: 100%;
+           
+        }
+        /* Position the heart icon */
+        .heart-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Style for the heart icon inside a circle border */
+        .heart-icon i {
+            font-size: 20px;
+            background-color: transparent;
+            border-radius: 50%;
+            padding: 5px;
+            border: 1px solid white;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Detail</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="heart-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Contact ID: {{ contact_data.vid | default('N/A') }}</h5>
+                        <p class="card-text"><strong><i class="fas fa-user"></i> Name:</strong> {{ contact_data.properties.firstname.value | default('N/A') }} {{ contact_data.properties.lastname.value | default('N/A') }}</p>
+                        {% if 'speciality' in contact_data.properties %}
+                            <p class="card-text"><strong><i class="fas fa-clipboard"></i> Speciality:</strong> {{ contact_data.properties.speciality.value }}</p>
+                        {% else %}
+                            <p class="card-text"><strong><i class="fas fa-clipboard"></i> Speciality:</strong> N/A</p>
+                        {% endif %}
+                        <p class="card-text"><strong><i class="fas fa-map-marker-alt"></i> Work Address:</strong> {{ contact_data.properties.workaddress1.value | default('N/A') }}</p>
+                        <p class="card-text"><strong><i class="fas fa-tags"></i> Areas of Interest:</strong> {{ contact_data.properties.areas_of_interest.value | default('N/A') }}</p>
+                        {% if 'county' in contact_data.properties %}
+                            <p class="card-text"><strong><i class="fas fa-flag"></i> County:</strong> {{ contact_data.properties.county.value | default('N/A') }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <i class="fas fa-eye"></i> 123
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Include Bootstrap JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
