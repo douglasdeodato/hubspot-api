@@ -19,7 +19,7 @@ API_URL_PATTERN = 'https://api.hubapi.com/contacts/v1/contact/vid/{}/profile'
 
 @app.route('/')
 def index():
-    CONTACT_IDS = ['30551', '10101', '267851', '30122']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     counties = []
 
     for contact_id in CONTACT_IDS:
@@ -38,7 +38,7 @@ def search():
     work_address = request.form['work_address'].lower()
     counties = request.form.getlist('county')
 
-    CONTACT_IDS = ['30551', '10101', '267851', '30122']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     search_results = []
 
     if any([name, speciality, work_address, counties]):
