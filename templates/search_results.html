@@ -7,9 +7,24 @@
     <!-- Include Bootstrap stylesheet -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        /* Add custom style to set a fixed card height */
-        .card {
-            height: 100%;   
+         .card {
+            height: 100%;
+           
+        }
+        /* Position the heart icon */
+        .heart-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Style for the heart icon inside a circle border */
+        .heart-icon i {
+           
+            border-radius: 50%;
+            padding: 5px;
+            border: 1px solid white;
+            color: white;
         }
     </style>
 </head>
@@ -18,8 +33,11 @@
     <div class="container">
         <div class="row">
             {% for result in results %}
-            <div class="col-md-4 mb-4">
-                <div class="card d-flex flex-column align-items-stretch">
+            <div class="col-md-4 mb-3">
+                <div class="card mb-3">
+                    <div class="heart-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                         <title>Placeholder</title>
                         <rect width="100%" height="100%" fill="#868e96"></rect>
