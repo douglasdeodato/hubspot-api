@@ -20,7 +20,7 @@ headers = {
     'Authorization': f'Bearer {API_KEY}'
 }
 params = {
-    'count': 200
+    'count': 10
 }
 
 # Make the API request
