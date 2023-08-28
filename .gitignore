@@ -1,4 +1,5 @@
 config.json
+contact_ids.json
 .env
 contacts_data.json
 contacts_index.html
