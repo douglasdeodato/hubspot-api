@@ -19,29 +19,28 @@
                     </div>
                     <div class="card-body">
                         <form method="POST" action="/search">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="speciality">Speciality:</label>
-                                    <select class="form-control" name="speciality" id="speciality">
-                                        <option value="">All</option>
-                                        {% for speciality in specialities %}
-                                        <option value="{{ speciality }}">{{ speciality }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="work_address">Location:</label>
-                                    <select class="form-control" name="location" id="location">
-                                        <option value="">All</option>
-                                        {% for county in counties %}
-                                        <option value="{{ county }}">{{ county }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <label for="speciality">Speciality:</label>
+                                <input type="text" class="form-control" name="speciality" id="speciality">
                             </div>
+                            <div class="form-group">
+                                <label for="work_address">Work Address:</label>
+                                <input type="text" class="form-control" name="work_address" id="work_address">
+                            </div>
+                            <div class="form-group">
+                                <label for="counties">County:</label><br>
+                                {% for county in counties %}
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="county" value="{{ county }}" id="{{ county }}">
+                                    <label class="form-check-label" for="{{ county }}">{{ county }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Search</button>
                         </form>
                     </div>
                 </div>

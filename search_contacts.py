@@ -21,6 +21,7 @@ API_URL_PATTERN = 'https://api.hubapi.com/contacts/v1/contact/vid/{}/profile'
 def index():
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     counties = []
+    specialities = get_specialities()
 
     for contact_id in CONTACT_IDS:
         contact_data = fetch_contact_data(contact_id)
@@ -29,7 +30,7 @@ def index():
             if county not in counties:
                 counties.append(county)
 
-    return render_template('search.html', counties=counties)
+    return render_template('search.html', counties=counties, specialities=specialities)
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -56,7 +57,6 @@ def contact_detail(contact_id):
     contact_data = fetch_contact_data(contact_id)
     return render_template('contact_detail.html', contact_data=contact_data)
 
-
 def fetch_contact_data(contact_id):
     api_url = API_URL_PATTERN.format(contact_id)
     response = requests.get(api_url, headers={'Authorization': f'Bearer {API_KEY}'})
@@ -65,11 +65,11 @@ def fetch_contact_data(contact_id):
     return None
 
 def search_term_matches(contact_data, name, speciality, work_address, counties):
-    fields_to_search = ['firstname', 'lastname', 'speciality', 'workaddress1', 'county']
-    
+    fields_to_search = ['speciality', 'county']
+
     if not counties:
-        counties = []  # If no counties selected, treat it as an empty list
-        
+        counties = []
+
     for field in fields_to_search:
         if 'properties' in contact_data and field in contact_data['properties']:
             field_value = contact_data['properties'][field]['value'].lower()
@@ -80,7 +80,17 @@ def search_term_matches(contact_data, name, speciality, work_address, counties):
                 return True
     return False
 
+def get_specialities():
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    specialities = set()
 
+    for contact_id in CONTACT_IDS:
+        contact_data = fetch_contact_data(contact_id)
+        if contact_data and 'properties' in contact_data and 'speciality' in contact_data['properties']:
+            speciality = contact_data['properties']['speciality']['value']
+            specialities.add(speciality)
+
+    return list(specialities)
 
 if __name__ == '__main__':
     app.run(debug=True)
