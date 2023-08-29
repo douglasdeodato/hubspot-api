@@ -34,23 +34,22 @@ def index():
 
 @app.route('/search', methods=['POST'])
 def search():
-    name = request.form['name'].lower()
     speciality = request.form['speciality'].lower()
-    work_address = request.form['work_address'].lower()
     counties = request.form.getlist('county')
 
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     search_results = []
 
-    if any([name, speciality, work_address, counties]):
+    if any([speciality, counties]):
         for contact_id in CONTACT_IDS:
             contact_data = fetch_contact_data(contact_id)
-            if contact_data and search_term_matches(contact_data, name, speciality, work_address, counties):
+            if contact_data and search_term_matches(contact_data, speciality, counties):
                 search_results.append(contact_data)
     else:
         search_results = []
 
     return render_template('search_results.html', results=search_results)
+
 
 @app.route('/contact_detail/<contact_id>')
 def contact_detail(contact_id):
@@ -64,21 +63,17 @@ def fetch_contact_data(contact_id):
         return response.json()
     return None
 
-def search_term_matches(contact_data, name, speciality, work_address, counties):
+def search_term_matches(contact_data, speciality, counties):
     fields_to_search = ['speciality', 'county']
-
-    if not counties:
-        counties = []
 
     for field in fields_to_search:
         if 'properties' in contact_data and field in contact_data['properties']:
             field_value = contact_data['properties'][field]['value'].lower()
-            if (not name or name in field_value) and \
-               (not speciality or speciality in field_value) and \
-               (not work_address or work_address in field_value) and \
+            if (not speciality or speciality in field_value) and \
                (field == 'county' and ('county' not in contact_data['properties'] or contact_data['properties']['county']['value'] in counties)):
                 return True
     return False
+
 
 def get_specialities():
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs

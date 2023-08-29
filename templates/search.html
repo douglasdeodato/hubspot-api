@@ -15,33 +15,33 @@
                     <div class="card-header">
                         <h1 class="text-center">
                             Psychotherapist Directory
-                            </h1>
+                        </h1>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="/search">
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <label for="speciality">Speciality:</label>
                                     <select class="form-control" name="speciality" id="speciality">
-                                        <option value="">All</option>
-                                        {% for speciality in specialities %}
-                                        <option value="{{ speciality }}">{{ speciality }}</option>
+                                        <option value="">Select Speciality</option>
+                                        <!-- Populate options dynamically using Jinja2 -->
+                                        {% for spec in specialities %}
+                                            <option value="{{ spec }}">{{ spec }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="work_address">Location:</label>
+                                <div class="col-md-6 mb-3">
+                                    <label for="location">Location:</label>
                                     <select class="form-control" name="location" id="location">
-                                        <option value="">All</option>
-                                        {% for county in counties %}
-                                        <option value="{{ county }}">{{ county }}</option>
+                                        <option value="">Select Location</option>
+                                        <!-- Populate options dynamically using Jinja2 -->
+                                        {% for loc in counties %}
+                                            <option value="{{ loc }}">{{ loc }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Search</button>
                         </form>
                     </div>
                 </div>
