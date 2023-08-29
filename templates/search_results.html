@@ -53,12 +53,11 @@
                         {% else %}
                             <p class="card-text"><strong><i class="fas fa-clipboard"></i> Speciality:</strong> N/A</p>
                         {% endif %}
-                        <p class="card-text"><strong><i class="fas fa-map-marker-alt"></i> Work Address:</strong> {{ result.properties.workaddress1.value | default('N/A') }}</p>
-                        <p class="card-text"><strong><i class="fas fa-tags"></i> Areas of Interest:</strong> {{ result.properties.areas_of_interest.value | default('N/A') }}</p>
                         {% if 'county' in result.properties %}
                             <p class="card-text"><strong><i class="fas fa-flag"></i> County:</strong> {{ result.properties.county.value | default('N/A') }}</p>
                         {% endif %}
                     </div>
+                    
                     <div class="card-footer">
                         <i class="fas fa-eye"></i> 123
                     </div>

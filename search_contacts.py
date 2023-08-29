@@ -2,8 +2,13 @@ import os
 from flask import Flask, render_template, request
 import requests
 from dotenv import load_dotenv
+import logging
+
 
 app = Flask(__name__)
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -36,19 +41,20 @@ def index():
 def search():
     speciality = request.form['speciality'].lower()
     counties = request.form.getlist('county')
+    app.logger.debug("Speciality: %s", speciality)
+    app.logger.debug("Counties: %s", counties)
 
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     search_results = []
 
-    if any([speciality, counties]):
-        for contact_id in CONTACT_IDS:
-            contact_data = fetch_contact_data(contact_id)
-            if contact_data and search_term_matches(contact_data, speciality, counties):
-                search_results.append(contact_data)
-    else:
-        search_results = []
+    for contact_id in CONTACT_IDS:
+        contact_data = fetch_contact_data(contact_id)
+        if contact_data and search_term_matches(contact_data, speciality):
+            search_results.append(contact_data)
 
     return render_template('search_results.html', results=search_results)
+
+
 
 
 @app.route('/contact_detail/<contact_id>')
@@ -63,17 +69,15 @@ def fetch_contact_data(contact_id):
         return response.json()
     return None
 
-def search_term_matches(contact_data, speciality, counties):
-    fields_to_search = ['speciality', 'county']
+def search_term_matches(contact_data, speciality):
+    fields_to_search = ['speciality']
 
     for field in fields_to_search:
         if 'properties' in contact_data and field in contact_data['properties']:
             field_value = contact_data['properties'][field]['value'].lower()
-            if (not speciality or speciality in field_value) and \
-               (field == 'county' and ('county' not in contact_data['properties'] or contact_data['properties']['county']['value'] in counties)):
+            if not speciality or speciality in field_value:
                 return True
     return False
-
 
 def get_specialities():
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
