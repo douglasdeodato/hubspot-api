@@ -2,13 +2,12 @@ import os
 from flask import Flask, render_template, request
 import requests
 from dotenv import load_dotenv
-import logging
-
-
-app = Flask(__name__)
+import logging  # Import the logging module
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
+
+app = Flask(__name__)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -41,19 +40,22 @@ def index():
 def search():
     speciality = request.form['speciality'].lower()
     counties = request.form.getlist('county')
-    app.logger.debug("Speciality: %s", speciality)
-    app.logger.debug("Counties: %s", counties)
+    app.logger.debug("Speciality: %s", speciality)  # Log speciality value
+    app.logger.debug("Counties: %s", counties)      # Log counties list
 
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
     search_results = []
 
-    for contact_id in CONTACT_IDS:
-        contact_data = fetch_contact_data(contact_id)
-        if contact_data and search_term_matches(contact_data, speciality):
-            search_results.append(contact_data)
+    if any([speciality, counties]):
+        for contact_id in CONTACT_IDS:
+            contact_data = fetch_contact_data(contact_id)
+            if contact_data and search_term_matches(contact_data, speciality, counties):
+                search_results.append(contact_data)
+    else:
+        # Handle the case where both speciality and counties are empty
+        search_results = fetch_all_contacts()
 
     return render_template('search_results.html', results=search_results)
-
 
 
 
@@ -69,15 +71,14 @@ def fetch_contact_data(contact_id):
         return response.json()
     return None
 
-def search_term_matches(contact_data, speciality):
-    fields_to_search = ['speciality']
-
-    for field in fields_to_search:
-        if 'properties' in contact_data and field in contact_data['properties']:
-            field_value = contact_data['properties'][field]['value'].lower()
-            if not speciality or speciality in field_value:
+def search_term_matches(contact_data, specialities, counties):
+    if 'properties' in contact_data and 'speciality' in contact_data['properties']:
+        contact_speciality = contact_data['properties']['speciality']['value']
+        for selected_speciality in specialities:
+            if any(spec.lower() in contact_speciality.lower() for spec in selected_speciality.split()):
                 return True
     return False
+
 
 def get_specialities():
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
@@ -91,5 +92,18 @@ def get_specialities():
 
     return list(specialities)
 
+def fetch_all_contacts():
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    all_results = []
+
+    for contact_id in CONTACT_IDS:
+        contact_data = fetch_contact_data(contact_id)
+        if contact_data:
+            all_results.append(contact_data)
+
+    return all_results
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+    app.logger.debug("This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.")
