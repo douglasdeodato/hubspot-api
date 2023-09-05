@@ -2,28 +2,24 @@ import os
 from flask import Flask, render_template, request
 import requests
 from dotenv import load_dotenv
-import logging  # Import the logging module
+import logging
 
-# Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Load API key from environment variable
 API_KEY = os.getenv('HUBSPOT_API_KEY')
 
 if API_KEY is None:
     raise ValueError("HUBSPOT_API_KEY environment variable is not set")
 
-# Define the API URL pattern
 API_URL_PATTERN = 'https://api.hubapi.com/contacts/v1/contact/vid/{}/profile'
 
 @app.route('/')
 def index():
-    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']
     counties = []
     specialities = get_specialities()
 
@@ -40,24 +36,22 @@ def index():
 def search():
     speciality = request.form['speciality'].lower()
     counties = request.form.getlist('county')
-    app.logger.debug("Speciality: %s", speciality)  # Log speciality value
-    app.logger.debug("Counties: %s", counties)      # Log counties list
+    app.logger.debug("Speciality: %s", speciality)
+    app.logger.debug("Counties: %s", counties)
 
-    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']
     search_results = []
 
-    if any([speciality, counties]):
+    if speciality == "all" and "All" in counties:
+        # If both "Speciality" and "County" are set to "All," return all contacts
+        search_results = fetch_all_contacts()
+    else:
         for contact_id in CONTACT_IDS:
             contact_data = fetch_contact_data(contact_id)
             if contact_data and search_term_matches(contact_data, speciality, counties):
                 search_results.append(contact_data)
-    else:
-        # Handle the case where both speciality and counties are empty
-        search_results = fetch_all_contacts()
 
     return render_template('search_results.html', results=search_results)
-
-
 
 @app.route('/contact_detail/<contact_id>')
 def contact_detail(contact_id):
@@ -79,9 +73,8 @@ def search_term_matches(contact_data, specialities, counties):
                 return True
     return False
 
-
 def get_specialities():
-    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']
     specialities = set()
 
     for contact_id in CONTACT_IDS:
@@ -93,7 +86,7 @@ def get_specialities():
     return list(specialities)
 
 def fetch_all_contacts():
-    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']  # Replace with actual contact IDs
+    CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']
     all_results = []
 
     for contact_id in CONTACT_IDS:
@@ -102,7 +95,6 @@ def fetch_all_contacts():
             all_results.append(contact_data)
 
     return all_results
-
 
 if __name__ == '__main__':
     app.run(debug=True)

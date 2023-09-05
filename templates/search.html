@@ -23,7 +23,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="speciality">Speciality:</label>
                                     <select class="form-control" name="speciality" id="speciality">
-                                        <option value="">All</option>
+                                        <option value="all">All</option> <!-- Add this "All" option -->
                                         <option value="Abuse">Abuse</option>
                                         <option value="Anxiety">Anxiety</option>
                                         <option value="panic attacks">Panic Attacks</option>
@@ -35,17 +35,15 @@
                                     <div class="form-group">
                                         <label for="county">County:</label>
                                         <select class="form-control" name="county" id="county">
-                                            <option value="">Select County</option>
+                                            <option value="All">All</option> <!-- Add this "All" option -->
                                             <!-- Populate options dynamically using Jinja2 -->
                                             {% for county in counties %}
                                                 <option value="{{ county }}">{{ county }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    
                                 </div>
-                                
-                            
+                            </div>
                             <button type="submit" class="btn btn-primary btn-block">Search</button>
                         </form>
                     </div>
