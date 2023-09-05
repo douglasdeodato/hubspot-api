@@ -66,12 +66,24 @@ def fetch_contact_data(contact_id):
     return None
 
 def search_term_matches(contact_data, specialities, counties):
-    if 'properties' in contact_data and 'speciality' in contact_data['properties']:
-        contact_speciality = contact_data['properties']['speciality']['value']
-        for selected_speciality in specialities:
-            if any(spec.lower() in contact_speciality.lower() for spec in selected_speciality.split()):
-                return True
+    if 'properties' in contact_data:
+        contact_speciality = contact_data['properties'].get('speciality', {}).get('value', '').lower()
+        contact_county = contact_data['properties'].get('county', {}).get('value', '').lower()
+
+        speciality_match = True
+        if specialities != 'all':
+            speciality_match = any(spec.lower() in contact_speciality for spec in specialities)
+
+        county_match = True
+        if 'All' not in counties and contact_county.lower() not in [county.lower() for county in counties]:
+            county_match = False
+
+        return speciality_match and county_match
+
     return False
+
+
+
 
 def get_specialities():
     CONTACT_IDS = ['30551', '10101', '267851', '30122', '22854', '29160', '27620']
